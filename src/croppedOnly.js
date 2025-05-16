@@ -30,7 +30,8 @@ export default function PanOnlyCropper({
   imgSrc,
   frameWidth = 400,
   frameHeight = 400,
-  initialCoords // e.g. [[229, 261], [423, 261], [423, 451], [229, 451]]
+  initialCoords, // e.g. [[229, 261], [423, 261], [423, 451], [229, 451]]
+  isDraggable
 }) {
   // 1. Calculate bounding box from initialCoords
   const xs = initialCoords.map(c => c[0]);
@@ -57,6 +58,7 @@ export default function PanOnlyCropper({
 
   // When image loads, calculate initial zoom and crop
   React.useEffect(() => {
+
     const img = new window.Image();
     img.crossOrigin = "anonymous";
     img.src = imgSrc;
@@ -105,8 +107,8 @@ export default function PanOnlyCropper({
           aspect={aspect}
           cropShape="rect"
           showGrid={false}
-          onCropChange={setCrop}
-          onZoomChange={setZoom}
+          onCropChange={ isDraggable ? setCrop : () =>{}}
+          onZoomChange={ isDraggable ? setZoom : () =>{}}
           onCropComplete={onCropComplete}
           restrictPosition={false}
           style={{
